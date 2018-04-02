@@ -1,4 +1,8 @@
 #文件生成规则
+
+default :
+	../z_tools/make.exe img
+
 ipl.bin : ipl.nas Makefile
 	../z_tools/nask.exe ipl.nas ipl.bin ipl.lst
 
@@ -23,5 +27,7 @@ run : install
 clean :
 	del ipl.bin 
 	del	ipl.lst
+
+src_only :
+	../z_tools/make.exe clean
 	del helloos.img
-	
