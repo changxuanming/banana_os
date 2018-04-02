@@ -7,6 +7,9 @@ helloos.img : ipl.bin Makefile
 	  wbinimg src:ipl.bin len:512 from:0 to:0	\
 	  imgout:helloos.img
 #命令
+asm :	
+	../z_tools/make.exe -r ipl.bin
+
 img :
 	../z_tools/make.exe -r helloos.img
 	
@@ -15,7 +18,7 @@ install: img
 	
 run : install
 	copy helloos.img ..\z_tools\qemu\fdimage0.bin
-	..\z_tools\make.exe	-C ../z_tools/qemu
+	..\z_tools\make.exe -C ../z_tools/qemu
 
 clean :
 	del ipl.bin 
