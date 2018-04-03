@@ -1,9 +1,9 @@
 ; haribote-ipl
 ; TAB=4
+; 程序描述：读取磁盘前10个柱面0和1磁头的内容
+CYLS	EQU		10				; 声明CYLS=10,含义为读取前10个柱面的正反两面
 
-CYLS	EQU		10				; 声明CYLS=10
-
-		ORG		0x7c00			; 指明程序装载地址
+		ORG		0x7c00			; 告诉nask.exe,指明程序在内存中的装载地址
 
 ; 标准FAT12格式软盘专用的代码 Stand FAT12 format floppy code
 
