@@ -9,9 +9,12 @@ void write_mem8(int addr , int data);
 void HariMain(void)
 {
 	int i; //4Byte 变量
-	
+	char *p; //用于装载8bit的象素点色彩
 	for (i = 0xa0000; i<=0xaffff; i++){
-		write_mem8(i,15);
+		//write_mem8(i, i & 0x0f);
+		//转换方法
+		p = i;
+		*p = i & 0x0f;
 	}
 
 	for(;;){
