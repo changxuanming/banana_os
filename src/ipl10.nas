@@ -39,7 +39,7 @@ entry:
 
 ; 读取磁盘
 
-		MOV		AX,0x0820
+		MOV		AX,0x0820		; 软盘前10个柱面储存在内存中的起始地址（排除第一个引导扇区）
 		MOV		ES,AX
 		MOV		CH,0			; 柱面0
 		MOV		DH,0			; 磁头0
@@ -79,7 +79,7 @@ next:
 		JB		readloop		; CH < CYLS 跳转到readloop
 
 ; 读取完毕，跳转到haribote.sys执行！
-		MOV		[0x0ff0],CH		; IPLがどこまで読んだのかをメモ
+		MOV		[0x0ff0],CH		; IPL读取的柱面数记录
 		JMP		0xc200
 
 error:
