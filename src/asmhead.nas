@@ -23,7 +23,7 @@ VRAM	EQU		0x0ff8			; 图像缓冲区的起始地址
 		MOV		BYTE [VMODE],8	; 屏幕的模式（参考C语言的引用）
 		MOV		WORD [SCRNX],320
 		MOV		WORD [SCRNY],200
-		MOV		DWORD [VRAM],0x000a0000
+		MOV		DWORD [VRAM],0x000a0000		;32bit 位的内存地址（显存在内存中的位置）
 
 ; 通过BIOS获取指示灯状态
 
