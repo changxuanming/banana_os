@@ -1,4 +1,4 @@
-/* GDT、IDT、descriptor table ?系?理 */
+/* GDT、IDT、descriptor table  */
 
 #include "bootpack.h"
 

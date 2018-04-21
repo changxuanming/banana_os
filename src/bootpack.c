@@ -9,7 +9,7 @@ void HariMain(void)
 	char s[40], mcursor[256];
 	int mx, my;
 
-	init_gdtidt();
+	init_gdtidt();//初始化GDT&IDT
 	init_palette();// 初始化?色板
 	init_screen8(binfo->vram, binfo->scrnx, binfo->scrny);//初始化界面背景
 	mx = (binfo->scrnx - 16) / 2;  /* 画面中央坐?的?算 */

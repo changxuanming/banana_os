@@ -1,38 +1,38 @@
-/* ?槹??晹暘揑?棟 */
+/* 关于绘图部分的处理 */
 
 #include "bootpack.h"
 
 void init_palette(void)
 {
 	static unsigned char table_rgb[16 * 3] = {
-		0x00, 0x00, 0x00,	/*  0:麷 */
-		0xff, 0x00, 0x00,	/*  1:椑? */
-		0x00, 0xff, 0x00,	/*  2:椇? */
-		0xff, 0xff, 0x00,	/*  3:椇墿 */
-		0x00, 0x00, 0xff,	/*  4:椇? */
-		0xff, 0x00, 0xff,	/*  5:椇巼 */
-		0x00, 0xff, 0xff,	/*  6:愺椇? */
-		0xff, 0xff, 0xff,	/*  7:敀 */
-		0xc6, 0xc6, 0xc6,	/*  8:椇奃 */
-		0x84, 0x00, 0x00,	/*  9:埫? */
-		0x00, 0x84, 0x00,	/* 10:埫? */
-		0x84, 0x84, 0x00,	/* 11:埫墿 */
-		0x00, 0x00, 0x84,	/* 12:埫惵 */
-		0x84, 0x00, 0x84,	/* 13:埫巼 */
-		0x00, 0x84, 0x84,	/* 14:愺埫? */
-		0x84, 0x84, 0x84	/* 15:埫奃 */
+		0x00, 0x00, 0x00,	/*  0:黑 */
+		0xff, 0x00, 0x00,	/*  1:梁红 */
+		0x00, 0xff, 0x00,	/*  2:亮绿 */
+		0xff, 0xff, 0x00,	/*  3:亮黄 */
+		0x00, 0x00, 0xff,	/*  4:亮蓝 */
+		0xff, 0x00, 0xff,	/*  5:亮紫 */
+		0x00, 0xff, 0xff,	/*  6:浅亮蓝 */
+		0xff, 0xff, 0xff,	/*  7:白 */
+		0xc6, 0xc6, 0xc6,	/*  8:亮灰 */
+		0x84, 0x00, 0x00,	/*  9:暗红 */
+		0x00, 0x84, 0x00,	/* 10:暗绿 */
+		0x84, 0x84, 0x00,	/* 11:暗黄 */
+		0x00, 0x00, 0x84,	/* 12:暗青 */
+		0x84, 0x00, 0x84,	/* 13:暗紫 */
+		0x00, 0x84, 0x84,	/* 14:浅暗蓝 */
+		0x84, 0x84, 0x84	/* 15:暗灰 */
 	};
 	set_palette(0, 15, table_rgb);
 	return;
 
-	/* C?尵拞揑static char?嬪扅擻梡槹悢悩丆憡摉槹??拞揑DB巜椷 */
+	/* C语言中的static char语句只能用于数据，相当于汇编中的DB指令 */
 }
 
 void set_palette(int start, int end, unsigned char *rgb)
 {
 	int i, eflags;
-	eflags = io_load_eflags();	/* ??拞抐?壜?巙揑? */
-	io_cli(); 					/* 彨拞抐?壜?巙抲?0,嬛巭拞抐 */
+	eflags = io_load_eflags();	/* 记录中断许可标志的值 */
+	io_cli(); 					/* 将中断许可标志置为0,禁止中断 */
 	io_out8(0x03c8, start);
 	for (i = start; i <= end; i++) {
 		io_out8(0x03c9, rgb[0] / 4);
@@ -40,7 +40,7 @@ void set_palette(int start, int end, unsigned char *rgb)
 		io_out8(0x03c9, rgb[2] / 4);
 		rgb += 3;
 	}
-	io_store_eflags(eflags);	/* ?尨拞抐?壜?巙 */
+	io_store_eflags(eflags);	/* 复原中断许可标志 */
 	return;
 }
 
@@ -97,7 +97,7 @@ void putfont8(char *vram, int xsize, int x, int y, char c, char *font)
 void putfonts8_asc(char *vram, int xsize, int x, int y, char c, unsigned char *s)
 {
 	extern char hankaku[4096];
-	/* C?尵拞丆帤晞孁搒惀埲0x00?旜 */
+	/* C语言中，字符串都是以0x00结尾 */
 	for (; *s != 0x00; s++) {
 		putfont8(vram, xsize, x, y, c, hankaku + *s * 16);
 		x += 8;
@@ -106,7 +106,7 @@ void putfonts8_asc(char *vram, int xsize, int x, int y, char c, unsigned char *s
 }
 
 void init_mouse_cursor8(char *mouse, char bc)
-/* 憀?揑悢悩弝?乮16x16乯 */
+/* 鼠标的数据准备（16x16） */
 {
 	static char cursor[16][16] = {
 		"**************..",
