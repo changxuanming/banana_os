@@ -9,11 +9,14 @@ void init_gdtidt(void)
 	int i;
 
 	/* GDT初始化 */
+	//2^13个GDT 段寄存器高13位表地址（short）(/8)
 	for (i = 0; i <= LIMIT_GDT / 8; i++) {
-		set_segmdesc(gdt + i, 0, 0, 0);
+		set_segmdesc(gdt + i, 0, 0, 0);//只?初始化64kb的GDT
 	}
+	//cpu可以管理全部内存
 	set_segmdesc(gdt + 1, 0xffffffff,   0x00000000, AR_DATA32_RW);
 	set_segmdesc(gdt + 2, LIMIT_BOTPAK, ADR_BOTPAK, AR_CODE32_ER);
+	//GDTR 48bit 低16bit 表示段上限（大小）
 	load_gdtr(LIMIT_GDT, ADR_GDT);
 
 	/* IDT初始化 */
