@@ -13,7 +13,7 @@ SCRNX	EQU		0x0ff4			; 分辨率X
 SCRNY	EQU		0x0ff6			; 分辨率Y
 VRAM	EQU		0x0ff8			; 图像缓冲区的起始地址
 
-		ORG		0xc200			;  这个的程序要被装载的内存地址
+		ORG		0xc200			;  这个的程序要被装载的内存地址 在ipl10.nas之后
 
 ; 设置屏幕模式
 

@@ -75,6 +75,7 @@ void init_screen8(char *vram, int x, int y)
 	return;
 }
 
+//c=color 
 void putfont8(char *vram, int xsize, int x, int y, char c, char *font)
 {
 	int i;
@@ -93,7 +94,7 @@ void putfont8(char *vram, int xsize, int x, int y, char c, char *font)
 	}
 	return;
 }
-
+//s=string
 void putfonts8_asc(char *vram, int xsize, int x, int y, char c, unsigned char *s)
 {
 	extern char hankaku[4096];
