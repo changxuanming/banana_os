@@ -26,20 +26,15 @@ void init_pic(void)
 
 #define PORT_KEYDAT		0x0060	//键盘设备，端口号
 
-struct KEYBUF keybuf;
+struct FIFO8 keyfifo;
 
 void inthandler21(int *esp)
 /* 来自PS/2键盘的中断 */
 {
-	struct BOOTINFO *binfo = (struct BOOTINFO *) ADR_BOOTINFO;
-	unsigned char data, s[4];
+	unsigned char data;
 	io_out8(PIC0_OCW2, 0x61);	/* 通知PIC“IRQ-01已经受理完毕” */
 	data = io_in8(PORT_KEYDAT);
-	
-	if (keybuf.flag == 0) {
-		keybuf.data = data;
-		keybuf.flag = 1;
-	}
+	fifo8_put(&keyfifo, data);
 	return;
 }
 
