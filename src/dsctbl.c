@@ -1,4 +1,4 @@
-/* GDT、IDT、descriptor table  */
+/* GDT縲！DT縲‥escriptor table 蜈ｳ邉ｻ螟�逅� */
 
 #include "bootpack.h"
 
@@ -8,28 +8,24 @@ void init_gdtidt(void)
 	struct GATE_DESCRIPTOR    *idt = (struct GATE_DESCRIPTOR    *) ADR_IDT;
 	int i;
 
-	/* GDT初始化 */
-	//2^13个GDT 段寄存器高13位表地址（short）(/8)
+	/* GDT蛻晏ｧ句喧 */
 	for (i = 0; i <= LIMIT_GDT / 8; i++) {
-		set_segmdesc(gdt + i, 0, 0, 0);//只?初始化64kb的GDT
+		set_segmdesc(gdt + i, 0, 0, 0);
 	}
-	//cpu可以管理全部内存
 	set_segmdesc(gdt + 1, 0xffffffff,   0x00000000, AR_DATA32_RW);
 	set_segmdesc(gdt + 2, LIMIT_BOTPAK, ADR_BOTPAK, AR_CODE32_ER);
-	//GDTR 48bit 低16bit 表示段上限（大小）
-	load_gdtr(LIMIT_GDT, ADR_GDT);//理解内存?
+	load_gdtr(LIMIT_GDT, ADR_GDT);
 
-	/* IDT初始化 */
+	/* IDT蛻晏ｧ句喧 */
 	for (i = 0; i <= LIMIT_IDT / 8; i++) {
 		set_gatedesc(idt + i, 0, 0, 0);
 	}
 	load_idtr(LIMIT_IDT, ADR_IDT);
-	
-	/* IDT?置*/
+
+	/* IDT隶ｾ鄂ｮ*/
 	set_gatedesc(idt + 0x21, (int) asm_inthandler21, 2 * 8, AR_INTGATE32);
 	set_gatedesc(idt + 0x27, (int) asm_inthandler27, 2 * 8, AR_INTGATE32);
 	set_gatedesc(idt + 0x2c, (int) asm_inthandler2c, 2 * 8, AR_INTGATE32);
-
 
 	return;
 }

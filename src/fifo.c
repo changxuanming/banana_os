@@ -51,7 +51,7 @@ int fifo8_get(struct FIFO8 *fifo)
 }
 
 int fifo8_status(struct FIFO8 *fifo)
-/* 积攒数据量 */
+/* 报告一下积攒是数据量 */
 {
 	return fifo->size - fifo->free;
 }

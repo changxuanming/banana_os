@@ -24,32 +24,7 @@ void init_pic(void)
 	return;
 }
 
-#define PORT_KEYDAT		0x0060	//键盘设备，端口号
-
-struct FIFO8 keyfifo;
-
-void inthandler21(int *esp)
-/* 来自PS/2键盘的中断 */
-{
-	unsigned char data;
-	io_out8(PIC0_OCW2, 0x61);	/* 通知PIC“IRQ-01已经受理完毕” */
-	data = io_in8(PORT_KEYDAT);
-	fifo8_put(&keyfifo, data);
-	return;
-}
-
-struct FIFO8 mousefifo;
-
-void inthandler2c(int *esp)
-/* 来自PS/2鼠标的中断 */
-{
-	unsigned char data;
-	io_out8(PIC1_OCW2, 0x64);	/* 通知PIC IRQ-12 已经受理完毕 */
-	io_out8(PIC0_OCW2, 0x62);	/* 通知PIC IRQ-02 已经受理完毕 */
-	data = io_in8(PORT_KEYDAT);
-	fifo8_put(&mousefifo, data);
-	return;
-}
+#define PORT_KEYDAT		0x0060
 
 void inthandler27(int *esp)
 /* PIC0中断的不完整策略 */

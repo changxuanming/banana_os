@@ -1,10 +1,10 @@
 /* asmhead.nas */
 struct BOOTINFO { /* 0x0ff0-0x0fff */
-	char cyls; /* ??‹æ?¥??“Ÿ?~ */
-	char leds; /* ?????“ILED“Ió? */
-	char vmode; /* ??–Í®?‘½­ˆÊÊF */
+	char cyls; /* å¯åŠ¨åŒºè¯»ç£ç›˜è¯»åˆ°æ­¤ä¸ºæ­¢ */
+	char leds; /* å¯åŠ¨æ—¶é”®ç›˜çš„LEDçš„çŠ¶æ€ */
+	char vmode; /* æ˜¾å¡æ¨¡å¼ä¸ºå¤šå°‘ä½å½©è‰² */
 	char reserve;
-	short scrnx, scrny; /* ‰æ–Ê•ª™—¦ */
+	short scrnx, scrny; /* ç”»é¢åˆ†è¾¨ç‡ */
 	char *vram;
 };
 #define ADR_BOOTINFO	0x00000ff0
@@ -33,16 +33,15 @@ int fifo8_get(struct FIFO8 *fifo);
 int fifo8_status(struct FIFO8 *fifo);
 
 /* graphic.c */
-void init_palette(void);//‰n‰»?F”Â
-void set_palette(int start, int end, unsigned char *rgb);//?’u?F”Â?F
+void init_palette(void);
+void set_palette(int start, int end, unsigned char *rgb);
 void boxfill8(unsigned char *vram, int xsize, unsigned char c, int x0, int y0, int x1, int y1);
 void init_screen8(char *vram, int x, int y);
-void putfont8(char *vram, int xsize, int x, int y, char c, char *font);//ŠE–Êã?¦ˆê˜¢š•„
-void putfonts8_asc(char *vram, int xsize, int x, int y, char c, unsigned char *s);//İŠE–Êã?¦ˆê’i•¶š
+void putfont8(char *vram, int xsize, int x, int y, char c, char *font);
+void putfonts8_asc(char *vram, int xsize, int x, int y, char c, unsigned char *s);
 void init_mouse_cursor8(char *mouse, char bc);
 void putblock8_8(char *vram, int vxsize, int pxsize,
-	int pysize, int px0, int py0, char *buf, int bxsize);/*vxsizeF“–‘OŠE–Ê“Ix‘œ‘f”Cpx/ysizeF‘œ‘f?“IxAy‘å¬Cpx/y0F‘œ‘f?İŠE–Êã“IˆÊ’uC*/
-
+	int pysize, int px0, int py0, char *buf, int bxsize);
 #define COL8_000000		0
 #define COL8_FF0000		1
 #define COL8_00FF00		2
@@ -71,28 +70,22 @@ struct GATE_DESCRIPTOR {
 	char dw_count, access_right;
 	short offset_high;
 };
-void init_gdtidt(void);//‰n‰»GDT“I64KB˜aIDT“I256˜¢’†’f•û–@
+void init_gdtidt(void);
 void set_segmdesc(struct SEGMENT_DESCRIPTOR *sd, unsigned int limit, int base, int ar);
 void set_gatedesc(struct GATE_DESCRIPTOR *gd, int offset, int selector, int ar);
-#define ADR_IDT			0x0026f800	//IDTİ“à‘¶’†“IˆÊ’u
+#define ADR_IDT			0x0026f800
 #define LIMIT_IDT		0x000007ff
-#define ADR_GDT			0x00270000	//GDTİ“à‘¶’†‹NnˆÊ’u
-#define LIMIT_GDT		0x0000ffff	
+#define ADR_GDT			0x00270000
+#define LIMIT_GDT		0x0000ffff
 #define ADR_BOTPAK		0x00280000
 #define LIMIT_BOTPAK	0x0007ffff
-#define AR_DATA32_RW	0x4092		//GD00:limit ‰ğ?¬š?,32ˆÊ–Í®;Œn??—pC‰Â?Ê“I’iB•s‰Â?s
-#define AR_CODE32_ER	0x409a		//GD00:limit ‰ğ?¬š?,32ˆÊ–Í®;Œn??—pC‰Â?s“I’iB‰Â?•s‰ÂÊ
-#define AR_INTGATE32	0x008e		//’†’f?——LÁ?’è
+#define AR_DATA32_RW	0x4092
+#define AR_CODE32_ER	0x409a
+#define AR_INTGATE32	0x008e
 
 /* int.c */
-struct KEYBUF {
-	unsigned char data[32];
-	int next;
-};
 void init_pic(void);
-void inthandler21(int *esp);
 void inthandler27(int *esp);
-void inthandler2c(int *esp);
 #define PIC0_ICW1		0x0020
 #define PIC0_OCW2		0x0020
 #define PIC0_IMR		0x0021
@@ -105,3 +98,21 @@ void inthandler2c(int *esp);
 #define PIC1_ICW2		0x00a1
 #define PIC1_ICW3		0x00a1
 #define PIC1_ICW4		0x00a1
+
+/* keyboard.c */
+void inthandler21(int *esp);
+void wait_KBC_sendready(void);
+void init_keyboard(void);
+extern struct FIFO8 keyfifo;
+#define PORT_KEYDAT		0x0060
+#define PORT_KEYCMD		0x0064
+
+/* mouse.c */
+struct MOUSE_DEC {
+	unsigned char buf[3], phase;
+	int x, y, btn;
+};
+void inthandler2c(int *esp);
+void enable_mouse(struct MOUSE_DEC *mdec);
+int mouse_decode(struct MOUSE_DEC *mdec, unsigned char dat);
+extern struct FIFO8 mousefifo;

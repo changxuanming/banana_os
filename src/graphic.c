@@ -1,38 +1,38 @@
-/* ¹ØÓÚ»æÍ¼²¿·ÖµÄ´¦Àí */
+/* å…³äºç»˜å›¾éƒ¨åˆ†çš„å¤„ç† */
 
 #include "bootpack.h"
 
 void init_palette(void)
 {
 	static unsigned char table_rgb[16 * 3] = {
-		0x00, 0x00, 0x00,	/*  0:ºÚ */
-		0xff, 0x00, 0x00,	/*  1:Áººì */
-		0x00, 0xff, 0x00,	/*  2:ÁÁÂÌ */
-		0xff, 0xff, 0x00,	/*  3:ÁÁ»Æ */
-		0x00, 0x00, 0xff,	/*  4:ÁÁÀ¶ */
-		0xff, 0x00, 0xff,	/*  5:ÁÁ×Ï */
-		0x00, 0xff, 0xff,	/*  6:Ç³ÁÁÀ¶ */
-		0xff, 0xff, 0xff,	/*  7:°× */
-		0xc6, 0xc6, 0xc6,	/*  8:ÁÁ»Ò */
-		0x84, 0x00, 0x00,	/*  9:°µºì */
-		0x00, 0x84, 0x00,	/* 10:°µÂÌ */
-		0x84, 0x84, 0x00,	/* 11:°µ»Æ */
-		0x00, 0x00, 0x84,	/* 12:°µÇà */
-		0x84, 0x00, 0x84,	/* 13:°µ×Ï */
-		0x00, 0x84, 0x84,	/* 14:Ç³°µÀ¶ */
-		0x84, 0x84, 0x84	/* 15:°µ»Ò */
+		0x00, 0x00, 0x00,	/*  0:é»‘ */
+		0xff, 0x00, 0x00,	/*  1:æ¢çº¢ */
+		0x00, 0xff, 0x00,	/*  2:äº®ç»¿ */
+		0xff, 0xff, 0x00,	/*  3:äº®é»„ */
+		0x00, 0x00, 0xff,	/*  4:äº®è“ */
+		0xff, 0x00, 0xff,	/*  5:äº®ç´« */
+		0x00, 0xff, 0xff,	/*  6:æµ…äº®è“ */
+		0xff, 0xff, 0xff,	/*  7:ç™½ */
+		0xc6, 0xc6, 0xc6,	/*  8:äº®ç° */
+		0x84, 0x00, 0x00,	/*  9:æš—çº¢ */
+		0x00, 0x84, 0x00,	/* 10:æš—ç»¿ */
+		0x84, 0x84, 0x00,	/* 11:æš—é»„ */
+		0x00, 0x00, 0x84,	/* 12:æš—é’ */
+		0x84, 0x00, 0x84,	/* 13:æš—ç´« */
+		0x00, 0x84, 0x84,	/* 14:æµ…æš—è“ */
+		0x84, 0x84, 0x84	/* 15:æš—ç° */
 	};
 	set_palette(0, 15, table_rgb);
 	return;
 
-	/* CÓïÑÔÖĞµÄstatic charÓï¾äÖ»ÄÜÓÃÓÚÊı¾İ£¬Ïàµ±ÓÚ»ã±àÖĞµÄDBÖ¸Áî */
+	/* Cè¯­è¨€ä¸­çš„static charè¯­å¥åªèƒ½ç”¨äºæ•°æ®ï¼Œç›¸å½“äºæ±‡ç¼–ä¸­çš„DBæŒ‡ä»¤ */
 }
 
 void set_palette(int start, int end, unsigned char *rgb)
 {
 	int i, eflags;
-	eflags = io_load_eflags();	/* ¼ÇÂ¼ÖĞ¶ÏĞí¿É±êÖ¾µÄÖµ */
-	io_cli(); 					/* ½«ÖĞ¶ÏĞí¿É±êÖ¾ÖÃÎª0,½ûÖ¹ÖĞ¶Ï */
+	eflags = io_load_eflags();	/* è®°å½•ä¸­æ–­è®¸å¯æ ‡å¿—çš„å€¼ */
+	io_cli(); 					/* å°†ä¸­æ–­è®¸å¯æ ‡å¿—ç½®ä¸º0,ç¦æ­¢ä¸­æ–­ */
 	io_out8(0x03c8, start);
 	for (i = start; i <= end; i++) {
 		io_out8(0x03c9, rgb[0] / 4);
@@ -40,7 +40,7 @@ void set_palette(int start, int end, unsigned char *rgb)
 		io_out8(0x03c9, rgb[2] / 4);
 		rgb += 3;
 	}
-	io_store_eflags(eflags);	/* ¸´Ô­ÖĞ¶ÏĞí¿É±êÖ¾ */
+	io_store_eflags(eflags);	/* å¤åŸä¸­æ–­è®¸å¯æ ‡å¿— */
 	return;
 }
 
@@ -75,7 +75,6 @@ void init_screen8(char *vram, int x, int y)
 	return;
 }
 
-//c=color 
 void putfont8(char *vram, int xsize, int x, int y, char c, char *font)
 {
 	int i;
@@ -94,11 +93,11 @@ void putfont8(char *vram, int xsize, int x, int y, char c, char *font)
 	}
 	return;
 }
-//s=string
+
 void putfonts8_asc(char *vram, int xsize, int x, int y, char c, unsigned char *s)
 {
 	extern char hankaku[4096];
-	/* CÓïÑÔÖĞ£¬×Ö·û´®¶¼ÊÇÒÔ0x00½áÎ² */
+	/* Cè¯­è¨€ä¸­ï¼Œå­—ç¬¦ä¸²éƒ½æ˜¯ä»¥0x00ç»“å°¾ */
 	for (; *s != 0x00; s++) {
 		putfont8(vram, xsize, x, y, c, hankaku + *s * 16);
 		x += 8;
@@ -107,7 +106,7 @@ void putfonts8_asc(char *vram, int xsize, int x, int y, char c, unsigned char *s
 }
 
 void init_mouse_cursor8(char *mouse, char bc)
-/* Êó±êµÄÊı¾İ×¼±¸£¨16x16£© */
+/* é¼ æ ‡çš„æ•°æ®å‡†å¤‡ï¼ˆ16x16ï¼‰ */
 {
 	static char cursor[16][16] = {
 		"**************..",
