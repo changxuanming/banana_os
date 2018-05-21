@@ -13,7 +13,7 @@ struct TIMERCTL timerctl;
 void init_pit(void)
 {
 	int i;
-	struct TIMER *t; /* 哨兵定时器 */
+	struct TIMER *t;
 	io_out8(PIT_CTRL, 0x34);
 	io_out8(PIT_CNT0, 0x9c);
 	io_out8(PIT_CNT0, 0x2e);
@@ -58,8 +58,8 @@ void timer_init(struct TIMER *timer, struct FIFO32 *fifo, int data)
 void timer_settime(struct TIMER *timer, unsigned int timeout)
 {
 	int e;
-	struct TIMER *t, *s; // 链表中前一个后一个timer
-	timer->timeout = timeout + timerctl.count;/* 设定timeout时间赋值为系统时间 */
+	struct TIMER *t, *s;
+	timer->timeout = timeout + timerctl.count;
 	timer->flags = TIMER_FLAGS_USING;
 	e = io_load_eflags();
 	io_cli();

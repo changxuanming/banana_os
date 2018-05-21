@@ -3,7 +3,7 @@
 #include "bootpack.h"
 
 struct FIFO32 *mousefifo;
-int mousedata0; /* 鼠标初始编号 */
+int mousedata0;
 
 void inthandler2c(int *esp)
 /* 来自PS/2鼠标的中断 */
