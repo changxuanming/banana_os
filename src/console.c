@@ -78,7 +78,7 @@ void console_task(struct SHEET *sheet, unsigned int memtotal)
 						putfonts8_asc_sht(sheet, 8, cursor_y, COL8_FFFFFF, COL8_000000, s, 30);
 						cursor_y = cons_newline(cursor_y, sheet);
 						cursor_y = cons_newline(cursor_y, sheet);
-					} else if (strcmp(cmdline, "cls") == 0) {
+					} else if (strcmp(cmdline, "cls") == 0 || strcmp(cmdline, "clear") == 0) {
 						/* cls命令*/
 						for (y = 28; y < 28 + 128; y++) {
 							for (x = 8; x < 8 + 240; x++) {
