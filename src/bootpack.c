@@ -1,4 +1,4 @@
-/* bootpack�̃��C�� */
+/* bootpack */
 
 #include "bootpack.h"
 #include <stdio.h>
